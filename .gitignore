@@ -1,0 +1,28 @@
+# Maven
+target/
+**/target/
+
+# IntelliJ
+.idea/
+**/.idea/
+*.iml
+*.iws
+*.ipr
+
+# Maven wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# Build
+build/
+**/build/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Environment / secrets
+.env
+*.env
