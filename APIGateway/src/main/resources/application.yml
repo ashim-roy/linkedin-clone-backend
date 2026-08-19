@@ -1,0 +1,49 @@
+#Application properties
+spring.application.name: APIGateway
+
+server:
+  port: 8080
+
+#Eureka Client Configuration
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+# You Only talk to api gateway and then api gateway will talk to other services. Which type of request should be route dto which service
+
+#debug log to see the routing information
+logging:
+    level:
+      org.springframework.cloud.gateway: DEBUG
+      reactor.netty.http.client: DEBUG
+
+# Spring cloud  gateway configuration
+spring:
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+
+            - id: user-service
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/api/v1/users/**
+              filters:
+                - StripPrefix=2
+
+            - id: posts-service
+              uri: lb://POSTS-SERVICE
+              predicates:
+                - Path=/api/v1/posts/**
+              filters:
+                - StripPrefix=2
+
+            - id: connections-service
+              uri: lb://CONNECTIONS-SERVICE
+              predicates:
+                - Path=/api/v1/connections/**
+              filters:
+                - StripPrefix=2
