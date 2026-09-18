@@ -1,4 +1,4 @@
-package com.ashimCS.linkedinClone.postsService.auth;
+package com.ashim.linkedinClone.ConnectionsService.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

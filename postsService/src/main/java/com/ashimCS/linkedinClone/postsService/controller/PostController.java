@@ -1,5 +1,6 @@
 package com.ashimCS.linkedinClone.postsService.controller;
 
+import com.ashimCS.linkedinClone.postsService.auth.AuthContextHolder;
 import com.ashimCS.linkedinClone.postsService.dto.PostCreateRequestDto;
 import com.ashimCS.linkedinClone.postsService.dto.PostDto;
 import com.ashimCS.linkedinClone.postsService.service.PostService;
@@ -33,6 +34,7 @@ public class PostController {
     //get a post
     @GetMapping("/{postId}")    // GET  http://localhost:9010/api/v1/posts/core/1
     public ResponseEntity<PostDto> getPost(@PathVariable Long postId) {
+        Long userId = AuthContextHolder.getCurrentUserId();
         PostDto postDto = postService.getPostById(postId);
         return ResponseEntity.ok(postDto);
     }

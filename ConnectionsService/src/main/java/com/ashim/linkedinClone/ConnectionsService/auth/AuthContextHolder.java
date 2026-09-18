@@ -1,4 +1,4 @@
-package com.ashimCS.linkedinClone.postsService.auth;
+package com.ashim.linkedinClone.ConnectionsService.auth;
 
 public class AuthContextHolder {
 

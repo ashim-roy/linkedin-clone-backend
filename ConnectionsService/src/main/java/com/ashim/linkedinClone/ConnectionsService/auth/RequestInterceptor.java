@@ -1,4 +1,4 @@
-package com.ashimCS.linkedinClone.postsService.auth;
+package com.ashim.linkedinClone.ConnectionsService.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

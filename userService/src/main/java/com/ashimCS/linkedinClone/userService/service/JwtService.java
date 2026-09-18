@@ -43,6 +43,8 @@ public class JwtService {
                 .compact();
     }
 
+
+    // get principle or claims like EMail etc.
     public long getUserIdFromToken(String token) {
         // Parses and verifies the JWT using the same secret key.
         Claims claims = Jwts.parser()

@@ -33,7 +33,7 @@ public class PostLikeService {
 
         if(hasAlreadyLikes) throw new BadRequestException("Post with id " + postId + " is already liked, you cannot like the post again");
 
-        // if the post ha snot been liked by user we craete a obj
+        // if the post has not been liked by user we craete a obj
         PostLike postLike = new PostLike();
         postLike.setUserId(userId);
         postLike.setPostId(postId);
