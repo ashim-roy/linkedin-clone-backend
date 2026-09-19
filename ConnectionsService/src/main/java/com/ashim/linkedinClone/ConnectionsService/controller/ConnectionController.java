@@ -25,9 +25,9 @@ public class ConnectionController {
 //        return ResponseEntity.ok(personList);
 //    }
 
-    @GetMapping("/first-degree")
-    public ResponseEntity<List<Person>> getFirstDegreeConnections() {
-        Long userId = AuthContextHolder.getCurrentUserId();
+    @GetMapping("/{userId}/first-degree")    // http://localhost:8080/api/v1/connections/core/2/first-degree
+    public ResponseEntity<List<Person>> getFirstDegreeConnections(@PathVariable("userId") Long userId) {
+       // Long userId = AuthContextHolder.getCurrentUserId();
         log.info("Fetching 1st degree connections for user id from header: {}", userId);
         List<Person> personList = connectionsService.getFirstDegreeConnections(userId);
         return ResponseEntity.ok(personList);
@@ -48,8 +48,6 @@ public class ConnectionController {
         List<Person> personList = connectionsService.getThirdDegreeConnections(userId);
         return ResponseEntity.ok(personList);
     }
-
-
-
+    
 }
 

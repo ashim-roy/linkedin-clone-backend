@@ -9,15 +9,23 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PersonRepository extends Neo4jRepository<Person, Long> {
-    Optional<Person> findByUserId(String userId);
+    Optional<Person> findByUserId(Long userId);
+
+    // Add DISTINCT here
+    @Query("MATCH (personA:Person {userId: $userId})-[:CONNECTED_TO]-(personB:Person) RETURN DISTINCT personB")
+    List<Person> getFirstDegreeConnections(Long userId);
 
     // 1st Degree
-    @Query("""
-    MATCH (personA:Person)-[:REQUESTED_TO]-(personB:Person)
-    WHERE personA.userId = $userId
-    RETURN personB
-    """)
-    List<Person> getFirstDegreeConnections(@Param("userId") Long userId);
+//    @Query("MATCH (personA:Person {userId: $userId})-[:CONNECTED_TO]-(personB:Person) RETURN personB")
+//    List<Person> getFirstDegreeConnections(Long userId);
+
+    //@Query("""
+//    MATCH (personA:Person)-[:REQUESTED_TO]-(personB:Person)
+//    WHERE personA.userId = $userId
+//    RETURN personB
+//    """)
+//    List<Person> getFirstDegreeConnections(@Param("userId") Long userId);
+//
 
     // 2nd Degree: Friends of friends (path length 2), ensuring we don't return the user or their direct friends
     @Query("""

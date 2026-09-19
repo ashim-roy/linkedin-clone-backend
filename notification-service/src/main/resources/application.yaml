@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: notification-service
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: ${spring.application.name}
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      #value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+
+      properties:
+        spring.json:
+          trusted.packages: com.ashim.linkedinClone.postsService.*
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss} %-5level - %msg%n"
