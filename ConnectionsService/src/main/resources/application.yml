@@ -4,7 +4,7 @@ spring:
     consumer:
       group-id: ${spring.application.name}
       key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
       properties:
         spring.json:
-          trusted.packages: com.codingshuttle.linkedInProject.*
+          trusted.packages: com.ashim.linkedinClone.*

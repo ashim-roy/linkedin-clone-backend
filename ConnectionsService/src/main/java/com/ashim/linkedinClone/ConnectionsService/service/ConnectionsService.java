@@ -1,5 +1,6 @@
 package com.ashim.linkedinClone.ConnectionsService.service;
 
+import com.ashim.linkedinClone.ConnectionsService.auth.AuthContextHolder;
 import com.ashim.linkedinClone.ConnectionsService.entity.Person;
 import com.ashim.linkedinClone.ConnectionsService.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,82 @@ public class ConnectionsService {
     public List<Person> getThirdDegreeConnections(Long userId) {
         log.info("Getting third degree connections for user {}", userId);
         return personRepository.getThirdDegreeConnections(userId);
+    }
+
+    public void sendConnectionRequest(Long receiverId){
+        Long senderId = AuthContextHolder.getCurrentUserId();
+
+        // check if connection exists, if yes throw exception
+        log.info("sending connection request with senderId: {}, receiverId: {}", senderId, receiverId);
+
+        if (senderId.equals(receiverId)) {
+            throw new RuntimeException("Both sender and receiver are the same");
+        }
+
+        boolean alreadySentRequest = personRepository.connectionRequestExists(senderId, receiverId);
+        boolean alreadyReceivedRequest = personRepository.connectionRequestExists(receiverId, senderId);
+        if (alreadySentRequest || alreadyReceivedRequest ) {
+            throw new RuntimeException("Connection request already exists, cannot send again");
+        }
+
+        boolean alreadyConnected = personRepository.alreadyConnected(senderId, receiverId);
+        if (alreadyConnected) {
+            throw new RuntimeException("Already connected users, cannot add connection request");
+        }
+
+
+        personRepository.addConnectionRequest(senderId, receiverId);
+        log.info("Successfully sent the connection request");
+
+    }
+
+    public void acceptConnectionRequest(Long senderId){
+        Long receiverId = AuthContextHolder.getCurrentUserId();
+        log.info("Accepting a connection request with senderId: {}, receiverId: {}", senderId, receiverId);
+
+        // if already a connection req exist?
+        if (senderId.equals(receiverId)) {
+            throw new RuntimeException("Both sender and receiver are the same");
+        }
+
+        boolean alreadyConnected = personRepository.alreadyConnected(senderId, receiverId);
+        if (alreadyConnected) {
+            throw new RuntimeException("Already connected users, cannot accept connection request again");
+        }
+
+        boolean alreadySentRequest = personRepository.connectionRequestExists(senderId, receiverId);
+        if (! alreadySentRequest) {
+            throw new RuntimeException("No Connection request exists, cannot accept without Request");
+        }
+
+        personRepository.acceptConnectionRequest(senderId, receiverId);
+
+        log.info("Successfully accepted the connection request with senderId: {}, receiverId: {}", senderId, receiverId);
+
+
+    }
+
+
+    public void rejectConnectionRequest(Long senderId) {
+        Long receiverId = AuthContextHolder.getCurrentUserId();
+        log.info("Rejecting a connection request with senderId: {}, receiverId: {}", senderId, receiverId);
+
+        // if already a connection req exist?
+        if (senderId.equals(receiverId)) {
+            throw new RuntimeException("Both sender and receiver are the same");
+        }
+
+        // to reject you should have a conenction req open
+
+        boolean alreadySentRequest = personRepository.connectionRequestExists(senderId, receiverId);
+        if (!alreadySentRequest) {
+            throw new RuntimeException("No Connection request exists, cannot reject it");
+        }
+
+        personRepository.rejectConnectionRequest(senderId, receiverId);
+
+        log.info("Successfully rejected the connection request with senderId: {}, receiverId: {}", senderId, receiverId);
+
     }
 
 
