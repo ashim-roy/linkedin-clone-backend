@@ -2,6 +2,8 @@ package com.ashim.linkedinClone.ConnectionsService.service;
 
 import com.ashim.linkedinClone.ConnectionsService.auth.AuthContextHolder;
 import com.ashim.linkedinClone.ConnectionsService.entity.Person;
+import com.ashim.linkedinClone.ConnectionsService.exception.BadRequestException;
+import com.ashim.linkedinClone.ConnectionsService.exception.ResourceNotFoundException;
 import com.ashim.linkedinClone.ConnectionsService.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,18 +40,18 @@ public class ConnectionsService {
         log.info("sending connection request with senderId: {}, receiverId: {}", senderId, receiverId);
 
         if (senderId.equals(receiverId)) {
-            throw new RuntimeException("Both sender and receiver are the same");
+            throw new BadRequestException("Both sender and receiver are the same");
         }
 
         boolean alreadySentRequest = personRepository.connectionRequestExists(senderId, receiverId);
         boolean alreadyReceivedRequest = personRepository.connectionRequestExists(receiverId, senderId);
         if (alreadySentRequest || alreadyReceivedRequest ) {
-            throw new RuntimeException("Connection request already exists, cannot send again");
+            throw new BadRequestException("Connection request already exists, cannot send again");
         }
 
         boolean alreadyConnected = personRepository.alreadyConnected(senderId, receiverId);
         if (alreadyConnected) {
-            throw new RuntimeException("Already connected users, cannot add connection request");
+            throw new BadRequestException("Already connected users, cannot add connection request");
         }
 
 
@@ -64,17 +66,17 @@ public class ConnectionsService {
 
         // if already a connection req exist?
         if (senderId.equals(receiverId)) {
-            throw new RuntimeException("Both sender and receiver are the same");
+            throw new BadRequestException("Both sender and receiver are the same");
         }
 
         boolean alreadyConnected = personRepository.alreadyConnected(senderId, receiverId);
         if (alreadyConnected) {
-            throw new RuntimeException("Already connected users, cannot accept connection request again");
+            throw new BadRequestException("Already connected users, cannot accept connection request again");
         }
 
         boolean alreadySentRequest = personRepository.connectionRequestExists(senderId, receiverId);
         if (! alreadySentRequest) {
-            throw new RuntimeException("No Connection request exists, cannot accept without Request");
+            throw new ResourceNotFoundException("No Connection request exists, cannot accept without Request");
         }
 
         personRepository.acceptConnectionRequest(senderId, receiverId);
@@ -91,14 +93,14 @@ public class ConnectionsService {
 
         // if already a connection req exist?
         if (senderId.equals(receiverId)) {
-            throw new RuntimeException("Both sender and receiver are the same");
+            throw new BadRequestException("Both sender and receiver are the same");
         }
 
         // to reject you should have a conenction req open
 
         boolean alreadySentRequest = personRepository.connectionRequestExists(senderId, receiverId);
         if (!alreadySentRequest) {
-            throw new RuntimeException("No Connection request exists, cannot reject it");
+            throw new ResourceNotFoundException("No Connection request exists, cannot reject it");
         }
 
         personRepository.rejectConnectionRequest(senderId, receiverId);
@@ -106,6 +108,5 @@ public class ConnectionsService {
         log.info("Successfully rejected the connection request with senderId: {}, receiverId: {}", senderId, receiverId);
 
     }
-
 
 }
