@@ -11,7 +11,7 @@
 	<groupId>com.ashim.linkedinClone</groupId>
 	<artifactId>ConnectionsService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ConnectionsService</name>
+	<name>connections-service</name>
 	<description>Connections Service for LinkedIn Project</description>
 	<url/>
 	<licenses>
@@ -136,6 +136,31 @@
 								</path>
 							</annotationProcessorPaths>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.4</version>
+				<configuration>
+					<from>
+						<!-- Switch from Docker Hub to a public mirror or alternative -->
+						<image>mcr.microsoft.com/openjdk/jdk:21-ubuntu</image> <!-- or amazoncorretto:17 -->
+					</from>
+					<to>
+						<image>docker.io/ashimroy1203/linkedin-app-${project.name}:${project.version}</image>
+						<tags>
+							<tag>latest</tag>
+						</tags>
+					</to>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
