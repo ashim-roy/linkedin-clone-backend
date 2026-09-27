@@ -5,10 +5,15 @@ server.servlet.context-path: /uploads
 
 eureka.client.serviceUrl.defaultZone: http://localhost:8761/eureka/
 
+#cloudinary:
+#  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+#  api-key: ${CLOUDINARY_API_KEY}
+#  api-secret: ${CLOUDINARY_API_SECRET}
+
 cloudinary:
-  cloud-name: ${CLOUDINARY_CLOUD_NAME}
-  api-key: ${CLOUDINARY_API_KEY}
-  api-secret: ${CLOUDINARY_API_SECRET}
+  cloud-name:  nezlor9a
+  api-key: 843389228458626
+  api-secret: jfzmEdBLXJkfChucwILGJwlhMo4
 
 gcloud:
   storage-bucket-name: ${GCP_BUCKET_NAME}

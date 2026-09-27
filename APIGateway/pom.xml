@@ -8,10 +8,10 @@
 		<version>3.3.8</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.codingshuttle.linkedInProject</groupId>
+	<groupId>com.ashim.linkedInProject</groupId>
 	<artifactId>APIGateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>APIGateway</name>
+	<name>api-gateway</name>
 	<description>API Gateway for our LinkedIn Project</description>
 	<url/>
 	<licenses>
@@ -72,6 +72,11 @@
 			<version>0.12.6</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-resolver-dns-native-macos</artifactId>
+			<classifier>osx-aarch_64</classifier>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -111,6 +116,32 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.4</version>
+				<configuration>
+					<from>
+						<!-- Switch from Docker Hub to a public mirror or alternative -->
+						<image>mcr.microsoft.com/openjdk/jdk:21-ubuntu</image> <!-- or amazoncorretto:17 -->
+					</from>
+					<to>
+						<image>docker.io/ashimroy1203/linkedin-app-${project.name}:${project.version}</image>
+						<tags>
+							<tag>latest</tag>
+						</tags>
+					</to>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

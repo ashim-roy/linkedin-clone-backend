@@ -11,6 +11,13 @@ public class RequestInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        // Public endpoints - no authenticated user yet
+        String path = request.getRequestURI();
+        if (path.contains("/auth/login") || path.contains("/auth/signup")) {
+            return true;
+        }
+
         // from the request get userId
         String userId = request.getHeader("X-User-Id" );
         AuthContextHolder.setCurrentUserId(Long.valueOf(userId)); // stores it in the context holder

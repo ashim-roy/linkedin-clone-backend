@@ -34,17 +34,18 @@ public class UploaderConfig {
         return new Cloudinary(configMap);
     }
 
+// TODO donot delete GCP config - better set up
 
-    @Value("${gcloud.storage-access-key}")
-    private String gcloudAccessKey;
-
-    @Bean
-    public Storage storage() throws IOException {
-        return StorageOptions.newBuilder()
-                .setCredentials(ServiceAccountCredentials.fromStream(
-                        new ByteArrayInputStream(gcloudAccessKey.getBytes())))
-                .build()
-                .getService();
-    }
+//    @Value("${gcloud.storage-access-key}")
+//    private String gcloudAccessKey;
+//
+//    @Bean
+//    public Storage storage() throws IOException {
+//        return StorageOptions.newBuilder()
+//                .setCredentials(ServiceAccountCredentials.fromStream(
+//                        new ByteArrayInputStream(gcloudAccessKey.getBytes())))
+//                .build()
+//                .getService();
+//    }
     
 }

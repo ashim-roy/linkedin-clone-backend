@@ -25,6 +25,12 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         return (exchange, chain) -> {
             log.info("Auth request: {}", exchange.getRequest().getURI());
 
+            // 1. Bypass authentication for public endpoints like login and signup
+            String path = exchange.getRequest().getURI().getPath();
+            if (path.contains("/auth/login") || path.contains("/auth/signup")) {
+                return chain.filter(exchange);
+            }
+
             final String tokenHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
 
             // Fix: Reject if null OR if it DOES NOT start with Bearer

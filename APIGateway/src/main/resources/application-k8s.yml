@@ -1,0 +1,21 @@
+eureka.client:
+  register-with-eureka: false
+  fetch-registry: false
+
+
+USER_SERVICE_URI: http://user-service
+POSTS_SERVICE_URI: http://connections-service
+CONNECTIONS_SERVICE_URI: http://posts-service
+NOTIFICATION_SERVICE_URI: http://notification-service
+
+#Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"
+
+ # This is actuator endpoint, we need this health endpoint so that our service/ deployment will have a readiness PROBE, ingress service need that, ingress service will check if certain service is running or not, in healthy state or not. It will ping a certain URL, to get that Health Url ( we can create that URL in our controller) here and we can say this is the controller and you can try ping that. And the URL will return responseEntity.Ok We can do this way or with the help of Actuator we don’t need to create that, with the help of actuator we don’t have to. Create that controller. If you enable the actuator health endpoint then there will be a health endpoint will be enabled by default. And anyone can go to the health endpoint directly and see if the server is currently running or not. That would be automatically activated if you include ethis. If you don’t want to include  this then you can write  a controller, simple hi controller that return ok. 200./. Will do.
+
+
+

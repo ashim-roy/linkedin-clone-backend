@@ -7,8 +7,10 @@ import com.ashim.linkedinClone.postsService.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,10 +26,13 @@ public class PostController {
     //}
 
     //create post
-    @PostMapping  // POST    http://localhost:9010/api/v1/posts/core
-    public ResponseEntity<PostDto> createPost(@RequestBody PostCreateRequestDto postCreateRequestDto,
-                                              HttpServletRequest httpServletRequest) {   //httpServletRequest - from here we can get access to header
-        PostDto  postDto = postService.createPost(postCreateRequestDto, 1L);
+   // @PostMapping  // POST    http://localhost:9010/api/v1/posts/core
+   // public ResponseEntity<PostDto> createPost(@RequestBody PostCreateRequestDto postCreateRequestDto ) {   //  HttpServletRequest httpServletRequest  - httpServletRequest - from here we can get access to header
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostDto> createPost(@RequestPart("post") PostCreateRequestDto postCreateRequestDto,
+                                              @RequestPart("file") MultipartFile file) {
+        PostDto  postDto = postService.createPost(postCreateRequestDto, file);
         return new ResponseEntity<>(postDto, HttpStatus.CREATED);
     }
 

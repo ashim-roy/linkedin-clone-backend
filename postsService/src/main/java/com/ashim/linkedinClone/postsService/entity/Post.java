@@ -18,6 +18,8 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
+    private String imageUrl;
+
     @Column(nullable = false)
     private long userId; // call RPC
 

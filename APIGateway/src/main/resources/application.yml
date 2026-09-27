@@ -1,36 +1,6 @@
 server:
   port: 8080
 
-spring:
-  application:
-    name: APIGateway
-  cloud:
-    gateway:
-      routes:
-        - id: user-service
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/api/v1/users/**
-          filters:
-            - StripPrefix=2
-            - name: AuthenticationFilter
-
-        - id: posts-service
-          uri: lb://POSTS-SERVICE
-          predicates:
-            - Path=/api/v1/posts/**
-          filters:
-            - StripPrefix=2
-            - name: AuthenticationFilter
-
-        - id: connections-service
-          uri: lb://CONNECTIONS-SERVICE
-          predicates:
-            - Path=/api/v1/connections/**
-          filters:
-            - StripPrefix=2
-            - name: AuthenticationFilter
-
 eureka:
   client:
     register-with-eureka: true
@@ -44,3 +14,32 @@ jwt:
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+
+spring:
+  application.name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: ${USER_SERVICE_URI:lb://USER-SERVICE}
+          predicates:
+            - Path=/api/v1/users/**
+          filters:
+            - StripPrefix=2
+
+        - id: posts-service
+          uri: ${POSTS_SERVICE_URI:lb://POSTS-SERVICE}
+          predicates:
+            - Path=/api/v1/posts/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
+
+        - id: connections-service
+          uri: ${CONNECTIONS_SERVICE_URI:lb://CONNECTIONS-SERVICE}
+          predicates:
+            - Path=/api/v1/connections/**
+          filters:
+            - StripPrefix=2
+            - name: AuthenticationFilter
