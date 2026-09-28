@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: posts-service
+  name: connections-service
 spec:
   selector:
     matchLabels:
-      app: posts-service
+      app: connections-service
   template:
     metadata:
       labels:
-        app: posts-service
+        app: connections-service
     spec:
       containers:
-      - name: posts-service
-        image: anuj55149/linkedin-app-posts-service
+      - name: connections-service
+        image: anuj55149/linkedin-app-connections-service
         resources:
           limits:
             memory: "400Mi"
@@ -25,25 +25,25 @@ spec:
           - name: SPRING_PROFILES_ACTIVE
             value: k8s
           - name: DB_USERNAME
-            value: user
+            value: neo4j
           - name: DB_PASSWORD
             value: password
-          - name: DB_SERVER
-            value: posts-db
           - name: DB_NAME
-            value: postsDB
+            value: connections-db
+          - name: KAFKA_LOG4J_ROOT_LOGLEVEL
+            value: "ERROR"
         ports:
-        - containerPort: 9010
+        - containerPort: 9030
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: posts-service
+  name: connections-service
 spec:
   selector:
-    app: posts-service
+    app: connections-service
   ports:
   - port: 80
-    targetPort: 9010
+    targetPort: 9030
